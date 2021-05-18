@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
-    List<TodoItem> todoItemsList;
+    List<TodoItem> todoItemsList = new ArrayList<>();
 
     @Override
     public TodoItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {

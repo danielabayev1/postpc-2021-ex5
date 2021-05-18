@@ -36,11 +36,18 @@ public class MainActivity extends AppCompatActivity {
         //find Views
         FloatingActionButton fab = findViewById(R.id.buttonCreateTodoItem);
         EditText editText = findViewById(R.id.editTextInsertTask);
+        RecyclerView rv = findViewById(R.id.recyclerTodoItemsList);
+
+        TodoItemAdapter adapter = new TodoItemAdapter();
+        adapter.setTodo(this.todoItemsHolder);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         fab.setOnClickListener(v -> {
             String input = editText.getText().toString();
             if (!(input.equals(""))) {
                 this.todoItemsHolder.addNewInProgressItem(input);
+                adapter.setTodo(this.todoItemsHolder);
                 editText.setText("");
             }
         });
