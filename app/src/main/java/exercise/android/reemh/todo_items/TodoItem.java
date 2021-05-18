@@ -5,16 +5,26 @@ import java.io.Serializable;
 public class TodoItem implements Serializable {
     // TODO: edit this class as you want
     private String description;
-    private String status;
+    private boolean done;
 
-    public TodoItem(String description, String status) {
+    public TodoItem(String description, boolean status) {
         this.description = description;
-        this.status = status;
+        this.done = status;
     }
 
-    public void changeStatus(String newStatus) {
-        this.status = newStatus;
+    public void setDone() {
+        this.done = true;
     }
+
+    public void setInProgress() {
+        this.done = false;
+    }
+
+    public String getDescription(){
+        return this.description;
+    }
+
+    public boolean getStatus(){return this.done;}
 
 
 }

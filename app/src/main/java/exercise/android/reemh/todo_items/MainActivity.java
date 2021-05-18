@@ -9,23 +9,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-  public TodoItemsHolder holder = null;
+    public TodoItemsHolder holder = null;
+    TodoItemsHolderImpl todoItemsHolder = new TodoItemsHolderImpl();
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    if (holder == null) {
-      holder = new TodoItemsHolderImpl();
+        if (holder == null) {
+            holder = new TodoItemsHolderImpl();
+        }
+
+        // TODO: implement the specs as defined below
+        //    (find all UI components, hook them up, connect everything you need)
+
+        //find Views
+        FloatingActionButton fab = findViewById(R.id.buttonCreateTodoItem);
+        EditText editText = findViewById(R.id.editTextInsertTask);
+
+        fab.setOnClickListener(v -> {
+            String input = editText.getText().toString();
+            if (!(input.equals(""))) {
+                this.todoItemsHolder.addNewInProgressItem(input);
+                editText.setText("");
+            }
+        });
     }
-
-    // TODO: implement the specs as defined below
-    //    (find all UI components, hook them up, connect everything you need)
-  }
 }
 
 /*
