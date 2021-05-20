@@ -1,6 +1,8 @@
 package exercise.android.reemh.todo_items;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 // TODO: implement!
@@ -8,13 +10,13 @@ public class TodoItemsHolderImpl implements TodoItemsHolder {
     public List<TodoItem> todoItemList = new ArrayList();
 
     @Override
-    public List<TodoItem> getCurrentItems(){
+    public List<TodoItem> getCurrentItems() {
         return new ArrayList<>(this.todoItemList);
     }
 
     @Override
     public void addNewInProgressItem(String description) {
-        this.todoItemList.add(new TodoItem(description, false));
+        this.todoItemList.add( new TodoItem(description, false, System.currentTimeMillis()));
     }
 
     @Override
@@ -25,6 +27,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder {
                 break;
             }
         }
+        Collections.sort(this.todoItemList);
     }
 
     @Override
@@ -35,6 +38,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder {
                 break;
             }
         }
+        Collections.sort(this.todoItemList);
     }
 
     @Override

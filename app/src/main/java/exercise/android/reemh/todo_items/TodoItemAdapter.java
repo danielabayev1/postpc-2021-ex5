@@ -1,6 +1,7 @@
 package exercise.android.reemh.todo_items;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,14 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
-    List<TodoItem> todoItemsList = new ArrayList<>();
+    List<TodoItem> _todoItemsList = new ArrayList<>();
+    RecyclerOnClickListener onClickDeleteButtonListener = null;
+    RecyclerOnClickListener onClickCheckBoxListener = null;
+    RecyclerOnClickListener onClickEditListener = null;
 
     @Override
     public TodoItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -22,21 +27,46 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
 
     @Override
     public void onBindViewHolder(TodoItemHolder holder, int position) {
-        TodoItem todoItem = todoItemsList.get(position);
+        TodoItem todoItem = _todoItemsList.get(position);
+        //fresh start
+        holder.description.setPaintFlags(holder.description.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         holder.description.setText(todoItem.getDescription());
-        holder.checkBox.setChecked(todoItem.getStatus());
+        //init the views according the TodoItem
+        boolean status = todoItem.getStatus();
+        holder.checkBox.setChecked(status);
+        if (status) {
+            holder.description.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
+        holder.deleteButton.setOnClickListener(v -> {
+            if (onClickDeleteButtonListener != null) {
+                onClickDeleteButtonListener.onClick(_todoItemsList.get(position));
+            }
+        });
+        holder.checkBox.setOnClickListener(v -> {
+            if (onClickCheckBoxListener != null) {
+                if (!holder.description.getPaint().isStrikeThruText()) {
+                    holder.description.setPaintFlags(holder.description.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.description.setPaintFlags(holder.description.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+                holder.checkBox.setChecked(!todoItem.getStatus());
+                onClickCheckBoxListener.onClick(_todoItemsList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return this.todoItemsList.size();
+        return this._todoItemsList.size();
     }
 
-    public void setTodo(TodoItemsHolder todoList) {
+    public void setTodo(List<TodoItem> todoItemsList) {
         /* when our todoItemList is changed(added/deleted) we should say that we want to update the items
          * we've rendered before*/
-        todoItemsList.clear();
-        this.todoItemsList = todoList.getCurrentItems();
+        this._todoItemsList.clear();
+        this._todoItemsList.addAll(todoItemsList);
+        Collections.sort(this._todoItemsList, Collections.reverseOrder());
         notifyDataSetChanged();
     }
 }

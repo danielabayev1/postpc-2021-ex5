@@ -16,10 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity{
     public TodoItemsHolder holder = null;
-    TodoItemsHolderImpl todoItemsHolder = new TodoItemsHolderImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +37,32 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.recyclerTodoItemsList);
 
         TodoItemAdapter adapter = new TodoItemAdapter();
-        adapter.setTodo(this.todoItemsHolder);
+        adapter.setTodo(this.holder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         fab.setOnClickListener(v -> {
             String input = editText.getText().toString();
             if (!(input.equals(""))) {
-                this.todoItemsHolder.addNewInProgressItem(input);
-                adapter.setTodo(this.todoItemsHolder);
+                this.holder.addNewInProgressItem(input);
+                adapter.setTodo(this.holder.getCurrentItems());
                 editText.setText("");
             }
         });
+        adapter.onClickDeleteButtonListener=todoItem -> {
+            this.holder.deleteItem(todoItem);
+            adapter.setTodo(this.holder.getCurrentItems());
+        };
+        adapter.onClickCheckBoxListener=todoItem -> {
+            if (todoItem.getStatus()){
+                this.holder.markItemInProgress(todoItem);
+            }
+            else{
+                this.holder.markItemDone(todoItem);
+            }
+            adapter.setTodo(this.holder.getCurrentItems());
+        };
+
     }
 }
 
