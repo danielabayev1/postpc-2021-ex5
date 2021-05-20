@@ -35,11 +35,10 @@ public class TodoItem implements Serializable, Comparable<TodoItem> {
     public int compareTo(TodoItem o) {
         if (!this.isDone && o.isDone) {
             return 1;
-        } else if ((!this.isDone && !o.isDone) ||(this.isDone && o.isDone)) {
-            return Long.compare(this.timeStamp,o.timeStamp);
-        } else{
+        } else if ((!this.isDone && !o.isDone) || (this.isDone && o.isDone)) {
+            return Long.compare(this.timeStamp, o.timeStamp);
+        } else {
             return -1;
         }
-
     }
 }

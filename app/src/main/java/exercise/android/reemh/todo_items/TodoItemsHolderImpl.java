@@ -1,12 +1,13 @@
 package exercise.android.reemh.todo_items;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 // TODO: implement!
-public class TodoItemsHolderImpl implements TodoItemsHolder {
+public class TodoItemsHolderImpl implements TodoItemsHolder, Serializable {
     public List<TodoItem> todoItemList = new ArrayList();
 
     @Override
@@ -27,7 +28,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder {
                 break;
             }
         }
-        Collections.sort(this.todoItemList);
+//        Collections.sort(this.todoItemList);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder {
                 break;
             }
         }
-        Collections.sort(this.todoItemList);
+//        Collections.sort(this.todoItemList);
     }
 
     @Override

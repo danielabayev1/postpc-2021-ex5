@@ -13,11 +13,13 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     public TodoItemsHolder holder = null;
+    public EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,40 +30,56 @@ public class MainActivity extends AppCompatActivity{
             holder = new TodoItemsHolderImpl();
         }
 
-        // TODO: implement the specs as defined below
-        //    (find all UI components, hook them up, connect everything you need)
+        TodoItemAdapter adapter = new TodoItemAdapter();
 
         //find Views
         FloatingActionButton fab = findViewById(R.id.buttonCreateTodoItem);
-        EditText editText = findViewById(R.id.editTextInsertTask);
+        this.editText = findViewById(R.id.editTextInsertTask);
         RecyclerView rv = findViewById(R.id.recyclerTodoItemsList);
-
-        TodoItemAdapter adapter = new TodoItemAdapter();
         adapter.setTodo(this.holder.getCurrentItems());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        //onRestore
+        if (savedInstanceState != null) {
+            this.holder = (TodoItemsHolderImpl) savedInstanceState.getSerializable("items_holder");
+            adapter.setTodo(this.holder.getCurrentItems());
+            this.editText.setText(savedInstanceState.getString("text"));
+        }
+
+        // TODO: implement the specs as defined below
+        //    (find all UI components, hook them up, connect everything you need)
+
+
         fab.setOnClickListener(v -> {
-            String input = editText.getText().toString();
+            String input = this.editText.getText().toString();
             if (!(input.equals(""))) {
                 this.holder.addNewInProgressItem(input);
                 adapter.setTodo(this.holder.getCurrentItems());
-                editText.setText("");
+                this.editText.setText("");
             }
         });
-        adapter.onClickDeleteButtonListener=todoItem -> {
+        adapter.onClickDeleteButtonListener = todoItem -> {
             this.holder.deleteItem(todoItem);
             adapter.setTodo(this.holder.getCurrentItems());
         };
-        adapter.onClickCheckBoxListener=todoItem -> {
-            if (todoItem.getStatus()){
+        adapter.onClickCheckBoxListener = todoItem -> {
+            if (todoItem.getStatus()) {
                 this.holder.markItemInProgress(todoItem);
-            }
-            else{
+            } else {
                 this.holder.markItemDone(todoItem);
             }
             adapter.setTodo(this.holder.getCurrentItems());
         };
+
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("items_holder", (Serializable) holder);
+        outState.putString("text", this.editText.getText().toString());
 
     }
 }

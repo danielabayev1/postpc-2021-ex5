@@ -2,6 +2,8 @@ package exercise.android.reemh.todo_items;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,8 @@ import java.util.List;
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
     List<TodoItem> _todoItemsList = new ArrayList<>();
-    RecyclerOnClickListener onClickDeleteButtonListener = null;
-    RecyclerOnClickListener onClickCheckBoxListener = null;
-    RecyclerOnClickListener onClickEditListener = null;
+    ListLogicOnClickListener onClickDeleteButtonListener = null;
+    ListLogicOnClickListener onClickCheckBoxListener = null;
 
     @Override
     public TodoItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +32,7 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
         //fresh start
         holder.description.setPaintFlags(holder.description.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         holder.description.setText(todoItem.getDescription());
-        //init the views according the TodoItem
+        //init the views according the TodoItem status
         boolean status = todoItem.getStatus();
         holder.checkBox.setChecked(status);
         if (status) {
@@ -54,6 +55,7 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
                 onClickCheckBoxListener.onClick(_todoItemsList.get(position));
             }
         });
+
     }
 
     @Override
