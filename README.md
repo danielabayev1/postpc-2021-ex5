@@ -1,3 +1,14 @@
+
+I pledge the highest level of ethical principles in support of academic excellence.
+I ensure that all of my work reflects my own abilities and not those of someone else.
+
+## Answer to question:
+    1)I will add a button as we did in ex1 and when the user clicks on it it will open new activity
+        to change this description
+    2) It will be hard as we need to handle intents to save the changed data and change the Item object description
+        we need to create methods to support intents from adapter.
+    3) in regular edit we don't have the adapter, so working with it to change data from the recycler view
+        is more challenging
 # TodoItems List
 
 An Android exercise for developers teaching how to play around with RecyclerView and Adapter
