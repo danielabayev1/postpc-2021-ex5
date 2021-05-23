@@ -17,7 +17,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder, Serializable {
 
     @Override
     public void addNewInProgressItem(String description) {
-        this.todoItemList.add( new TodoItem(description, false, System.currentTimeMillis()));
+        this.todoItemList.add(0,new TodoItem(description, false, System.currentTimeMillis()));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder, Serializable {
                 break;
             }
         }
-//        Collections.sort(this.todoItemList);
+        Collections.sort(this.todoItemList,Collections.reverseOrder());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class TodoItemsHolderImpl implements TodoItemsHolder, Serializable {
                 break;
             }
         }
-//        Collections.sort(this.todoItemList);
+        Collections.sort(this.todoItemList,Collections.reverseOrder());
     }
 
     @Override

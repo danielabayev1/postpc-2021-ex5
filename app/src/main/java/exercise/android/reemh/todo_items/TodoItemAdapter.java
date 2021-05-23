@@ -68,7 +68,8 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemHolder> {
          * we've rendered before*/
         this._todoItemsList.clear();
         this._todoItemsList.addAll(todoItemsList);
-        Collections.sort(this._todoItemsList, Collections.reverseOrder());
+        //todo check if i need this below comment
+//        Collections.sort(this._todoItemsList, Collections.reverseOrder());
         notifyDataSetChanged();
     }
 }
