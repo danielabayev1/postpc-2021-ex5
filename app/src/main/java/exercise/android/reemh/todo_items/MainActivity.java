@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (holder == null) {
-            holder = new TodoItemsHolderImpl();
+//            holder = new TodoItemsHolderImpl();
         }
 
         TodoItemAdapter adapter = new TodoItemAdapter();

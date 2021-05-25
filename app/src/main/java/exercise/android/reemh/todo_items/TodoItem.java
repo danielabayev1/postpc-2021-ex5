@@ -1,26 +1,39 @@
 package exercise.android.reemh.todo_items;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class TodoItem implements Serializable, Comparable<TodoItem> {
     // TODO: edit this class as you want
     private String description;
     private boolean isDone;
-    private Long timeStamp;
+    private Long timeStampCreation;
+    private Long timeStampLastChanged;
 
     public TodoItem(String description, boolean isDone, Long timeStamp) {
         this.description = description;
         this.isDone = isDone;
-        this.timeStamp = timeStamp;
+        this.timeStampCreation = timeStamp;
+        this.timeStampLastChanged = timeStamp;
     }
 
     public void setDone() {
+        this.timeStampLastChanged = System.currentTimeMillis();
         this.isDone = true;
     }
 
     public void setInProgress() {
+        this.timeStampLastChanged = System.currentTimeMillis();
         this.isDone = false;
     }
+
+    public void setDescription(String description) {
+        this.timeStampLastChanged = System.currentTimeMillis();
+        this.description = description;
+    }
+
 
     public String getDescription() {
         return this.description;
@@ -36,9 +49,32 @@ public class TodoItem implements Serializable, Comparable<TodoItem> {
         if (!this.isDone && o.isDone) {
             return 1;
         } else if ((!this.isDone && !o.isDone) || (this.isDone && o.isDone)) {
-            return Long.compare(this.timeStamp, o.timeStamp);
+            return Long.compare(this.timeStampCreation, o.timeStampCreation);
         } else {
             return -1;
+        }
+    }
+    public void setTimeStampLastChanged(Long ts){
+        this.timeStampLastChanged = ts;
+    }
+
+    public Long getTimeStampCreation() {
+        return timeStampCreation;
+    }
+
+    public String getLastTimeChanges() {
+        String lastModified = "last modified: ";
+        if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - this.timeStampLastChanged) < 1) {
+            return (lastModified +
+                    TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.timeStampLastChanged)
+                    + " minutes ago");
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("Today at HH:mm");
+            Date date = new Date(this.timeStampLastChanged);
+            if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - this.timeStampLastChanged) >= 24) {
+                formatter = new SimpleDateFormat("dd-MM-yyyy at HH:mm");
+            }
+            return (lastModified + formatter.format(date));
         }
     }
 }
