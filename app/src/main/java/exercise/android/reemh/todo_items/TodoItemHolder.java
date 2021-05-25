@@ -4,13 +4,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TodoItemHolder extends RecyclerView.ViewHolder {
     CheckBox checkBox;
-    EditText description;
+    TextView description;
     Button deleteButton;
 
     public TodoItemHolder(View itemView) {

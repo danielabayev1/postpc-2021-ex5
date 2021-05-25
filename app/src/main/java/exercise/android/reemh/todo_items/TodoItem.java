@@ -1,5 +1,6 @@
 package exercise.android.reemh.todo_items;
 
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,7 +55,8 @@ public class TodoItem implements Serializable, Comparable<TodoItem> {
             return -1;
         }
     }
-    public void setTimeStampLastChanged(Long ts){
+
+    public void setTimeStampLastChanged(Long ts) {
         this.timeStampLastChanged = ts;
     }
 
@@ -69,12 +71,26 @@ public class TodoItem implements Serializable, Comparable<TodoItem> {
                     TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.timeStampLastChanged)
                     + " minutes ago");
         } else {
-            SimpleDateFormat formatter = new SimpleDateFormat("Today at HH:mm");
-            Date date = new Date(this.timeStampLastChanged);
-            if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - this.timeStampLastChanged) >= 24) {
-                formatter = new SimpleDateFormat("dd-MM-yyyy at HH:mm");
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date dateLast = new Date(this.timeStampLastChanged);
+            Date now = new Date(System.currentTimeMillis());
+            SimpleDateFormat formatterLast = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat formatterNow = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat formatterHour = new SimpleDateFormat("HH:mm");
+            if (formatterLast.format(dateLast).equals(formatterNow.format(now))) {
+                return lastModified + "Today at " + formatterHour.format(dateLast);
             }
-            return (lastModified + formatter.format(date));
+            return lastModified + formatterLast.format(dateLast) + " at " + formatterHour.format(dateLast);
+
         }
     }
+
+    public String getCreationTimeString() {
+        Date date = new Date(this.timeStampCreation);
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
+
+        return "created on: " + formatter1.format(date) + " at " + formatter2.format(date);
+    }
 }
+

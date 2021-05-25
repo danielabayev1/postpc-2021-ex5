@@ -1,5 +1,7 @@
 package exercise.android.reemh.todo_items;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 
@@ -23,4 +25,10 @@ public interface TodoItemsHolder {
 
   /** delete the @param item */
   void deleteItem(TodoItem item);
+
+  /** changes the @param description of an old item */
+  public void changeDescription(String oldDescription, String newDescription);
+  /*return the liveData*/
+  public LiveData<List<TodoItem>> getLiveData();
+
 }

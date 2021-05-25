@@ -2,16 +2,22 @@ package exercise.android.reemh.todo_items;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.lifecycle.LiveData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (holder == null) {
-//            holder = new TodoItemsHolderImpl();
+            holder = TodoItemApplication.getInstance().getTodoItemsHolder();
         }
 
         TodoItemAdapter adapter = new TodoItemAdapter();
+
 
         //find Views
         FloatingActionButton fab = findViewById(R.id.buttonCreateTodoItem);
@@ -42,10 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
         //onRestore
         if (savedInstanceState != null) {
-            this.holder = (TodoItemsHolderImpl) savedInstanceState.getSerializable("items_holder");
+            this.holder = TodoItemApplication.getInstance().getTodoItemsHolder();
             adapter.setTodo(this.holder.getCurrentItems());
             this.editText.setText(savedInstanceState.getString("text"));
         }
+        this.holder.getLiveData().observe(this, new Observer<List<TodoItem>>() {
+            @Override
+            public void onChanged(List<TodoItem> todoItems) {
+                adapter.setTodo(todoItems);
+            }
+        });
+
 
         // TODO: implement the specs as defined below
         //    (find all UI components, hook them up, connect everything you need)
@@ -71,6 +85,19 @@ public class MainActivity extends AppCompatActivity {
             }
             adapter.setTodo(this.holder.getCurrentItems());
         };
+        adapter.onClickEditListener = todoItem -> {
+            Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
+            int i;
+            List<TodoItem> todoItemList = holder.getCurrentItems();
+            for (i = 0; i < todoItemList.size(); i++) {
+                if (todoItemList.get(i).getDescription().equals(todoItem.getDescription())) {
+                    break;
+                }
+
+            }
+            editIntent.putExtra("position", i);
+            startActivity(editIntent);
+        };
 
     }
 
@@ -78,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("items_holder", (Serializable) holder);
         outState.putString("text", this.editText.getText().toString());
-
     }
 }
 

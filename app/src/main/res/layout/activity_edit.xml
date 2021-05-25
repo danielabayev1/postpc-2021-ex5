@@ -21,7 +21,7 @@
         android:text="jadnkgjnskjdggs"/>
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/editCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="k"
@@ -29,11 +29,11 @@
         app:layout_constraintTop_toBottomOf="@id/modifiedTime" />
 
     <EditText
-        android:id="@+id/descriptionText"
+        android:id="@+id/editDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/editCheckBox"
         app:layout_constraintTop_toBottomOf="@id/modifiedTime"
         tools:text="shit" />
 
